@@ -1975,23 +1975,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      //datos del formulario
       form: {
         priority: '',
         first_name: '',
         last_name: '',
         email: '',
         message: ''
-      }
+      },
+      errors: []
     };
   },
   methods: {
+    //guardar la info del contacto en el controlador store
     saveData: function saveData(e) {
       var _this = this;
 
-      // objeto para enviar la info y guardar a la api
+      this.checkForm(); // objeto para enviar la info y guardar a la api
+
       var params = {
         'priority': this.form.priority,
         'name': this.form.first_name,
@@ -2008,15 +2016,49 @@ __webpack_require__.r(__webpack_exports__);
           email: '',
           message: ''
         };
+        var notification = res.data;
+
+        _this.createNotification(notification);
       })["catch"](function (error) {
         console.log(error);
       });
     },
-    resetForm: function resetForm() {
-      this.form.reset();
+    //validar la información de cada campo
+    checkForm: function checkForm() {
+      this.errors = [];
+
+      if (!this.form.priority) {
+        this.errors.push('Escoga una prioridad');
+      }
+
+      if (!this.form.first_name) {
+        this.errors.push('Escriba su nombre');
+      }
+
+      if (!this.form.last_name) {
+        this.errors.push('Escriba su apellido');
+      }
+
+      if (!this.form.email) {
+        this.errors.push('Escriba su email');
+      }
+
+      if (!this.form.message) {
+        this.errors.push('Escriba un mensaje');
+      }
+    },
+    //notificacion de usuario creado
+    createNotification: function createNotification(notification) {
+      var div = document.createElement('div');
+      div.classList.add('toast');
+      div.innerText = notification;
+      var noti = document.getElementById('notification');
+      noti.appendChild(div);
+      setTimeout(function () {
+        div.remove();
+      }, 3000);
     }
-  },
-  mounted: function mounted() {}
+  }
 });
 
 /***/ }),
@@ -6453,7 +6495,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\nbody{\n\t\tbackground-color: #25274d;\n}\n.contact{\n\t\tpadding: 4%;\n\t\theight: 400px;\n}\n.col-md-3{\n\t\tbackground: #ff9b00;\n\t\tpadding: 4%;\n\t\tborder-top-left-radius: 0.5rem;\n\t\tborder-bottom-left-radius: 0.5rem;\n}\n.contact-info{\n\t\tmargin-top:10%;\n}\n.contact-info img{\n\t\tmargin-bottom: 15%;\n}\n.contact-info h2{\n\t\tmargin-bottom: 10%;\n}\n.col-md-9{\n\t\tbackground: #fff;\n\t\tpadding: 3%;\n\t\tborder-top-right-radius: 0.5rem;\n\t\tborder-bottom-right-radius: 0.5rem;\n}\n.contact-form label{\n\t\tfont-weight:600;\n}\n.contact-form button{\n\t\tbackground: #25274d;\n\t\tcolor: #fff;\n\t\tfont-weight: 600;\n\t\twidth: 25%;\n}\n.contact-form button:focus{\n\t\tbox-shadow:none;\n}\n", ""]);
+exports.push([module.i, "\nbody{\n\t\tbackground-color: #25274d;\n}\n.contact{\n\t\tpadding: 4%;\n\t\theight: 400px;\n}\n.col-md-3{\n\t\tbackground: #ff9b00;\n\t\tpadding: 4%;\n\t\tborder-top-left-radius: 0.5rem;\n\t\tborder-bottom-left-radius: 0.5rem;\n}\n.contact-info{\n\t\tmargin-top:10%;\n}\n.contact-info img{\n\t\tmargin-bottom: 15%;\n}\n.contact-info h2{\n\t\tmargin-bottom: 10%;\n}\n.col-md-9{\n\t\tbackground: #fff;\n\t\tpadding: 3%;\n\t\tborder-top-right-radius: 0.5rem;\n\t\tborder-bottom-right-radius: 0.5rem;\n}\n.contact-form label{\n\t\tfont-weight:600;\n}\n.contact-form button{\n\t\tbackground: #25274d;\n\t\tcolor: #fff;\n\t\tfont-weight: 600;\n\t\twidth: 25%;\n}\n.contact-form button:focus{\n\t\tbox-shadow:none;\n}\n.toast{\n        position: absolute;\n        background: #ff9b00;  \n        color:white;\n        border-radius: 3px;\n        opacity: 0.9;\n        padding: 1rem;\n        margin: 0.3rem;\n        transition:transform 0.6 ease-in;\n        right: 10px;\n}\n", ""]);
 
 // exports
 
@@ -38265,6 +38307,22 @@ var render = function() {
             }
           },
           [
+            _vm.errors.length
+              ? _c("p", [
+                  _c("b", [_vm._v("Validar los siguientes campos:")]),
+                  _vm._v(" "),
+                  _c(
+                    "ul",
+                    _vm._l(_vm.errors, function(error) {
+                      return _c("li", { key: error.id }, [
+                        _vm._v(_vm._s(error))
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
             _c("div", { staticClass: "form-group" }, [
               _c(
                 "label",
@@ -38480,7 +38538,9 @@ var render = function() {
           ]
         )
       ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "notification" } })
   ])
 }
 var staticRenderFns = [

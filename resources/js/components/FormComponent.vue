@@ -12,12 +12,12 @@
                 <!--Llamado al metodo saveData para guardar toda la info-->
                 <form class="contact-form" @submit.prevent="saveData">
 
-                    <!-- <p v-if="errors.length">
-                        <b>Please correct the following error(s):</b>
+                    <p v-if="errors.length">
+                        <b>Validar los siguientes campos:</b>
                         <ul>
                         <li v-for="error in errors" :key="error.id">{{ error }}</li>
                         </ul>
-                    </p> -->
+                    </p>
 
                     <div class="form-group">
                     <label class="control-label col-sm-2" for="priority">Prioridad:</label>
@@ -60,7 +60,11 @@
                     </div>
                     </div>
                 </form>
+                
             </div>
+        </div>
+        <div id="notification">
+
         </div>
     </div>
 </template>
@@ -68,19 +72,24 @@
 <script>
     export default {
         data(){
+
             return{
+                //datos del formulario
                 form :{
                     priority : '',
                     first_name : '',
                     last_name : '',
                     email : '',
                     message:''
-                }
+                },
+                errors:[]
             }
         },
 
         methods:{
+           //guardar la info del contacto en el controlador store
             saveData(e){
+                this.checkForm()
                 // objeto para enviar la info y guardar a la api
                 const params = {
                     'priority':this.form.priority,
@@ -98,17 +107,47 @@
                     email : '',
                     message:''
                 }
+                    const notification = res.data
+                    this.createNotification(notification)
                 }).catch(error =>{
                     console.log(error);
                 })
             },
-            resetForm(){
-                this.form.reset()
-            }
+            //validar la información de cada campo
+            checkForm(){
+                    this.errors = []
+                    if(!this.form.priority){
+                        this.errors.push('Escoga una prioridad')
+                    }
+                    if(!this.form.first_name){
+                        this.errors.push('Escriba su nombre')
+                    }
+                    if(!this.form.last_name){
+                        this.errors.push('Escriba su apellido')
+                    }
+                    if(!this.form.email){
+                        this.errors.push('Escriba su email')
+                    }
+                    if(!this.form.message){
+                        this.errors.push('Escriba un mensaje')
+                    }
+                
+              
+            }, 
+            //notificacion de usuario creado
+            createNotification(notification){
+            const div = document.createElement('div')
+            div.classList.add('toast')
+            div.innerText = notification
+            const noti = document.getElementById('notification')
+            noti.appendChild(div)
+            setTimeout(()=>{
+                div.remove()
+            },3000)
+}
+        
         },
-        mounted() {
-           
-        },
+       
     }
 </script>
 <style>
@@ -152,4 +191,15 @@
 	.contact-form button:focus{
 		box-shadow:none;
 	}
+    .toast{
+        position: absolute;
+        background: #ff9b00;  
+        color:white;
+        border-radius: 3px;
+        opacity: 0.9;
+        padding: 1rem;
+        margin: 0.3rem;
+        transition:transform 0.6 ease-in;
+        right: 10px;
+    }
 </style>

@@ -47,7 +47,7 @@ class ContactController extends Controller
         $saveData->save();
         //guardar mensaje asignandolo a cada contacto
         $saveMessage = Message::addMessage($saveData->id,$request->message);
-        return 'si guardo';
+        return 'Contacto Agregado';
     }
 
     

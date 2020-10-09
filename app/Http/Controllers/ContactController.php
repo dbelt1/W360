@@ -16,7 +16,7 @@ class ContactController extends Controller
         if($priority){
             $contacts = Contact::orderBy('id')->priority($priority)->get(['name','lastName','email','priority']);
         }else{
-            $contacts = Contact::all();
+            $contacts = Contact::get(['name','lastName','email','priority','created_at']);
         }
 
         return $contacts;

@@ -201,5 +201,6 @@
         margin: 0.3rem;
         transition:transform 0.6 ease-in;
         right: 10px;
+        top: 10px;
     }
 </style>

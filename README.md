@@ -20,15 +20,18 @@ podra obtener los mensajes con el siguiente comando:
 Para consultar la api de contacto debe ingresar a los siguientes enlaces:
 
 //Obtiene todos los contactos
+
 - api/contact
 
 //filtra los contactos segun la prioridad [High,Medium,Low] 
+
 -api/contact/{prioridad} //escribir una de las prioridades que estan en el array sin corchetes
 
 
 USO DE API EMAIL
 Esta api me muestra todos lo emails que se han registrado en la tabla contacto.
 para consultar la api de email debe ingresar al siguiente enlace:
+
 -api/email
 
 NOTA: Si tiene algún inconveniente contactenos en el formulario de la vista principal y nos estaremos en contacto,

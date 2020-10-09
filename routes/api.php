@@ -8,6 +8,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-route::resource('contact','ContactController');
+route::post('contact','ContactController@store');
+route::get('contact','ContactController@index');
+route::get('contact/{priority}','ContactController@index');
 //Api para obtener emails registrados
 route::get('email','ContactController@email');

@@ -9,11 +9,19 @@ use Illuminate\Http\Request;
 class ContactController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
-        $contacts = Contact::get(['name','lastName','email','priority']);
+        $priority = $request->priority;
+
+        if($priority){
+            $contacts = Contact::orderBy('id')->priority($priority)->get(['name','lastName','email','priority']);
+        }else{
+            $contacts = Contact::all();
+        }
+
         return $contacts;
     }
+    
     public function email(){
         $contacts = Contact::get(['email']);
         return $contacts;
